@@ -1,0 +1,30 @@
+{
+    "caches": [
+        {
+            "name": "book-api-v1-response-cache",
+            "description": "Response cache for the Book API (v1)"
+        }
+    ],
+    "keyvaluemaps": [
+        {
+            "name": "book-api-v1-configuration",
+            "entry": [
+                {
+                    "name": "cacheEntryExpiry",
+                    "value": "3600"
+                }
+            ]
+        }
+    ],
+    "targetservers": [{
+        "name": "library-api-v1",
+        "host": "apigee-dev-training.appspot.com",
+        "isEnabled": true,
+        "port": 443,
+        "sSLInfo": {
+            "clientAuthEnabled": "false",
+            "enabled": "true",
+            "ignoreValidationErrors": "false"
+        }
+    }]
+}

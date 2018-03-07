@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ExtractVariables name="ExtractVariables.AuthenticationResponse">
+   <Source>authenticationResponse</Source>
+   <JSONPayload>
+      <Variable name="id" type="string">
+         <JSONPath>$.id</JSONPath>
+      </Variable>
+   </JSONPayload>
+   <VariablePrefix>userInfo</VariablePrefix>
+</ExtractVariables>

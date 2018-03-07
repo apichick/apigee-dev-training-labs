@@ -1,0 +1,37 @@
+{
+    "apiproducts": [
+        {
+            "name": "BookAPIProduct",
+            "displayName": "BookAPIProduct",
+            "description": "Book API Product",
+            "approvalType": "auto",
+            "environments": [
+                "test"
+            ],
+            "proxies": [
+                "book-api-v1",
+                "identity-api-v1"
+            ]
+        }
+    ],
+    "developers": [
+        {
+            "email": "john.doe@acme.com",
+            "firstName": "John",
+            "lastName": "Doe",
+            "userName": "john.doe"
+        }
+    ],
+    "apps": [
+        {
+            "apiProducts": [
+                "BookAPIProduct"
+            ],
+            "callbackUrl": "http://callback",
+            "name": "BookApp",
+            "scopes": [],
+            "developerEmail": "john.doe@acme.com"
+        }   
+    ]
+}
+

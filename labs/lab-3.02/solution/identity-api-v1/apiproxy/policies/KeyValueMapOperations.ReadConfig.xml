@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<KeyValueMapOperations async="false" continueOnError="false" enabled="true" name="KeyValueMapOperations.ReadConfig" mapIdentifier="identity-api-v1-configuration">
+    <Scope>environment</Scope>
+    <ExpiryTimeInSecs>300</ExpiryTimeInSecs>
+    <Get assignTo="config.spikeArrestRate">
+        <Key>
+            <Parameter>spikeArrestRate</Parameter>
+        </Key>
+    </Get>
+    <Get assignTo="config.accessTokenExpiry">
+        <Key>
+            <Parameter>accessTokenExpiry</Parameter>
+        </Key>
+    </Get>
+    <Get assignTo="config.refreshTokenExpiry">
+        <Key>
+            <Parameter>refreshTokenExpiry</Parameter>
+        </Key>
+    </Get>
+</KeyValueMapOperations>

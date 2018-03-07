@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+	<FaultRules>
+		<FaultRule name="Invalid client">
+			<Step>
+				<Name>AssignMessage.Error.InvalidClient</Name>
+			</Step>
+			<Condition>fault.name = "InvalidBasicAuthenticationSource" OR fault.name = "InvalidApiKey" OR fault.name = "InvalidClientIdentifier"</Condition>
+		</FaultRule>
+		<FaultRule name="Invalid user">
+			<Step>
+				<Name>AssignMessage.Error.InvalidUser</Name>
+			</Step>
+			<Condition>fault.name = "ExecutionFailed" AND authenticationResponse.status.code = 401</Condition>
+		</FaultRule>
+		<FaultRule name="Spike Arrest Violation">
+			<Step>
+				<Name>AssignMessage.Error.SpikeArrestViolation</Name>
+			</Step>
+			<Condition>fault.name = "SpikeArrestViolation"</Condition>
+		</FaultRule>
+	</FaultRules>
+	<DefaultFaultRule>
+		<AlwaysEnforce>true</AlwaysEnforce>
+		<Step>
+			<Name>AssignMessage.Error.InternalServerError</Name>
+			<Condition>flow.error.code = NULL</Condition>
+		</Step>
+		<Step>
+			<Name>RaiseFault.Json</Name>
+		</Step>
+	</DefaultFaultRule>
+	<PreFlow>
+		<Request>
+			<Step>
+				<Name>KeyValueMapOperations.ReadConfig</Name>
+			</Step>
+			<Step>
+				<Name>SpikeArrest</Name>
+				<Condition>environment.name </Condition>
+			</Step>
+		</Request>
+	</PreFlow>
+	<Flows>
+		<Flow name="Generate Access Token (client credentials grant)">
+			<Request>
+				<Step>
+					<Name>OAuthV2.GenerateAccessToken.ClientCredentialsGrant</Name>
+				</Step>
+				<Step>
+					<Name>AssignMessage.OAuthV2.GenerateAccessToken.ClientCredentialsGrant</Name>
+				</Step>
+			</Request>
+			<Condition>request.verb = "POST" AND proxy.pathsuffix MatchesPath "/token" AND request.formparam.grant_type = "client_credentials"</Condition>
+		</Flow>
+		<Flow name="Generate Access Token (password grant)">
+			<Request>
+				<Step>
+					<Name>BasicAuthentication.Decode</Name>
+				</Step>
+				<Step>
+					<Name>VerifyAPIKey</Name>
+				</Step>
+				<Step>
+					<Name>AssignMessage.Error.InvalidClient</Name>
+					<Condition>flow.auth.clientSecret != verifyapikey.VerifyAPIKey.client_secret</Condition>
+				</Step>
+				<Step>
+					<Name>RaiseFault.GoToFaultRules</Name>
+					<Condition>flow.error.code != NULL</Condition>
+				</Step>
+				<Step>
+					<Name>ServiceCallout.AuthenticateUser</Name>
+				</Step>
+				<Step>
+					<Name>ExtractVariables.AuthenticationResponse</Name>
+				</Step>
+				<Step>
+					<Name>OAuthV2.GenerateAccessToken.PasswordGrant</Name>
+				</Step>
+				<Step>
+					<Name>AssignMessage.OAuthV2.GenerateAccessToken.PasswordGrant</Name>
+				</Step>
+			</Request>
+			<Condition>request.verb = "POST" AND proxy.pathsuffix MatchesPath "/token" AND request.formparam.grant_type = "password"</Condition>
+		</Flow>
+		<Flow name="Refresh Access Token">
+			<Request>
+				<Step>
+					<Name>OAuthV2.RefreshAccessToken</Name>
+				</Step>
+				<Step>
+					<Name>AssignMessage.OAuthV2.RefreshAccessToken</Name>
+				</Step>
+			</Request>
+			<Condition>request.verb = "POST" AND proxy.pathsuffix MatchesPath "/token" AND request.formparam.grant_type = "refresh_token"</Condition>
+		</Flow>
+		<Flow name="Not Found">
+			<Request>
+				<Step>
+					<Name>AssignMessage.Error.NotFound</Name>
+				</Step>
+				<Step>
+					<Name>RaiseFault.GoToFaultRules</Name>
+				</Step>
+			</Request>
+		</Flow>	
+	</Flows>
+    <PostFlow>
+		<Response>
+			<Step>
+				<Name>Javascript.AccessTokenResponse</Name>
+				<Condition>request.verb = "POST" AND proxy.pathsuffix MatchesPath "/token"</Condition>
+			</Step>
+		</Response>
+    </PostFlow>
+	<HTTPProxyConnection>
+        <BasePath>/identity/v1</BasePath>
+        <VirtualHost>secure</VirtualHost>
+    </HTTPProxyConnection>
+    <RouteRule name="any"/>
+</ProxyEndpoint>

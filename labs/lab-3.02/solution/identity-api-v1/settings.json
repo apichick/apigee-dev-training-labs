@@ -1,0 +1,12 @@
+{
+	"default": {
+		"scheme": "https"
+	},
+	"ORGANIZATION": {
+		"ENVIRONMENT": {
+			"domain": "ORGANIZATION-ENVIRONMENT.apigee.net/identity/v1",
+			"clientId": "CLIENTID",
+            "clientSecret": "CLIENTSECRET"	
+		}
+	}	
+}

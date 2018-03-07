@@ -1,0 +1,11 @@
+{
+	"default": {
+		"scheme": "https"
+	},
+	"ORGANIZATION": {
+		"ENVIRONMENT": {
+			"domain": "ORGANIZATION-ENVIRONMENT.apigee.net/book/v1",
+			"apikey": "APIKEY"	
+		}
+	}	
+}

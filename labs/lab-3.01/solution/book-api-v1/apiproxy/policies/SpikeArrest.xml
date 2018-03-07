@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SpikeArrest async="false" continueOnError="false" enabled="true" name="SpikeArrest">
+	<Rate ref="config.spikeArrestRate">10ps</Rate>
+</SpikeArrest>

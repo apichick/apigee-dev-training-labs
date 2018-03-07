@@ -1,0 +1,13 @@
+{
+	"default": {
+		"scheme": "https"
+	},
+	"ORGANIZATION": {
+		"TEST": {
+			"domain": "ORGANIZATION-ENVIRONMENT.apigee.net/book/v1",
+			"clientId": "CLIENTID",
+            "clientSecret": "CLIENTSECRET",	
+			"tokenEndpointUrl": "https://ORGANIZATION-ENVIRONMENT.apigee.net/identity/v1/token"
+		}
+	}	
+}

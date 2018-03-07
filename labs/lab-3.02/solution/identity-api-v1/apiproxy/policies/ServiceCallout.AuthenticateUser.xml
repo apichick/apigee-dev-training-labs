@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ServiceCallout async="false" continueOnError="false" enabled="true" name="ServiceCallout.AuthenticateUser">
+    <Request clearPayload="true" variable="authenticationRequest">
+        <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+        <Set>
+            <FormParams>
+                <FormParam name="username">{request.formparam.username}</FormParam>
+                <FormParam name="password">{request.formparam.password}</FormParam>
+            </FormParams>
+            <Verb>POST</Verb>
+        </Set>
+    </Request>
+    <Response>authenticationResponse</Response>
+    <Timeout>60000</Timeout>
+	<!-- Using LocalTargetConnection because we are using a mock deployed in the same organization -->
+    <LocalTargetConnection>
+        <Path>/mock/authenticate</Path>
+    </LocalTargetConnection>
+</ServiceCallout>

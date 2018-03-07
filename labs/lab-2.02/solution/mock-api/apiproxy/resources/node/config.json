@@ -1,0 +1,20 @@
+{
+    "mockDirectory": "./mock",
+    "quiet": false,
+    "port": "8080",
+    "latency": 50,
+    "logRequestHeaders": false,
+    "webServices": {
+        "authenticate": {
+            "latency": 20,
+            "verbs": ["post"],
+            "switch": ["password"],
+            "responses": {
+                "post": {"httpStatus": 401, "mockFile": "error.json"}
+            },
+            "switchResponses": {
+                "passwordvalid": {"httpStatus": 200, "mockFile": "success.json"}
+            }
+        }
+    }
+}

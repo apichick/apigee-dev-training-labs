@@ -1,0 +1,10 @@
+{
+	"default": {
+		"scheme": "https"
+	},
+	"ORGANIZATION": {
+		"ENVIRONMENT": {
+			"domain": "ORGANIZATION-ENVIRONMENT.apigee.net/mock"
+		}
+	}
+}

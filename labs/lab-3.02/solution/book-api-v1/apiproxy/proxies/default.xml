@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="default">
+	<FaultRules>
+		<FaultRule name="Invalid Access Token">
+			<Step>
+				<Name>AssignMessage.Error.InvalidAccessToken</Name>
+			</Step>
+			<Condition>fault.name = "invalid_access_token"</Condition>
+		</FaultRule>
+		<FaultRule name="Spike Arrest Violation">
+			<Step>
+				<Name>AssignMessage.Error.SpikeArrestViolation</Name>
+			</Step>
+			<Condition>fault.name = "SpikeArrestViolation"</Condition>
+		</FaultRule>
+		<FaultRule name="Quota Violation">
+			<Step>
+				<Name>AssignMessage.Error.QuotaViolation</Name>
+			</Step>
+			<Condition>fault.name = "QuotaViolation"</Condition>
+		</FaultRule>
+	</FaultRules>
+	<DefaultFaultRule>
+		<AlwaysEnforce>true</AlwaysEnforce>
+		<Step>
+			<Name>AssignMessage.Error.InternalServerError</Name>
+			<Condition>flow.error.code = NULL</Condition>
+		</Step>
+		<Step>
+			<Name>RaiseFault.JSON</Name>
+		</Step>
+	</DefaultFaultRule>
+	<PreFlow>
+		<Request>
+			<Step>
+				<Name>KeyValueMapOperations.ReadConfiguration</Name>
+			</Step>
+			<Step>
+				<Name>SpikeArrest</Name>
+				<Condition>environment.name = "prod"</Condition>
+			</Step>
+			<Step>
+				<Name>OAuthV2.VerifyAccessToken</Name>
+			</Step>
+			<Step>
+				<Name>Quota</Name>
+				<Condition>environment.name = "prod"</Condition>
+			</Step>
+			<Step>
+				<Name>ResponseCache</Name>
+			</Step>
+		</Request>
+	</PreFlow>
+	<Flows>
+		<Flow name="Get Books">
+			<Condition>request.verb = "GET" AND proxy.pathsuffix MatchesPath "/books"</Condition>
+		</Flow>
+		<Flow name="Search Books">
+			<Request>
+				<Step>
+					<Name>AssignMessage.Error.MissingSearchTerm</Name>
+					<Condition>request.queryparam.q = NULL</Condition>
+				</Step>
+				<Step>
+					<Name>RaiseFault.GoToFaultRules</Name>
+					<Condition>flow.error.code != NULL</Condition>
+				</Step>
+			</Request>
+			<Condition>request.verb = "GET" AND proxy.pathsuffix MatchesPath "/books/search"</Condition>
+		</Flow>
+		<Flow name="Get Book By Id">
+			<Response>
+				<Step>
+					<Name>Javascript.ParseBookResponse</Name>
+				</Step>
+				<Step>
+					<Name>StatisticsCollector.Book</Name>
+				</Step>
+			</Response>
+			<Condition>request.verb = "GET" AND proxy.pathsuffix MatchesPath "/books/*"</Condition>
+		</Flow>
+		<Flow name="Not Found">
+			<Request>
+				<Step>
+					<Name>AssignMessage.Error.ResourceNotFound</Name>
+				</Step>
+				<Step>
+					<Name>RaiseFault.GoToFaultRules</Name>
+				</Step>
+			</Request>
+		</Flow>
+	</Flows>
+	<PostFlow/>
+	<HTTPProxyConnection>
+		<BasePath>/book/v1</BasePath>
+		<VirtualHost>secure</VirtualHost>
+	</HTTPProxyConnection>
+	<RouteRule>
+		<TargetEndpoint>default</TargetEndpoint>
+	</RouteRule>
+</ProxyEndpoint>

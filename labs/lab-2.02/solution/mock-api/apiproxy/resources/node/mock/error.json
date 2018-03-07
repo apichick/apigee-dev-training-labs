@@ -1,0 +1,4 @@
+{
+    "code": "unauthorized",
+	"message": "User credentials are invalid" 
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.OAuthV2.RefreshAccessToken">
+  <AssignVariable>
+    <Name>issuedAt</Name>
+    <Ref>oauthv2accesstoken.OAuthV2.RefreshAccessToken.issued_at</Ref>
+  </AssignVariable>
+  <AssignVariable>
+    <Name>expiresIn</Name>
+    <Ref>oauthv2accesstoken.OAuthV2.RefreshAccessToken.expires_in</Ref>
+  </AssignVariable>
+  <AssignVariable>
+    <Name>refreshTokenExpiresIn</Name>
+    <Ref>oauthv2accesstoken.OAuthV2.RefreshAccessToken.refresh_token_expires_in</Ref>
+  </AssignVariable>
+  <AssignVariable>
+    <Name>accessToken</Name>
+    <Ref>oauthv2accesstoken.OAuthV2.RefreshAccessToken.access_token</Ref>
+  </AssignVariable>
+  <AssignVariable>
+    <Name>refreshToken</Name>
+    <Ref>oauthv2accesstoken.OAuthV2.RefreshAccessToken.refresh_token</Ref>
+  </AssignVariable>
+</AssignMessage>

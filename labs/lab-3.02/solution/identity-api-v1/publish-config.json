@@ -1,0 +1,36 @@
+{
+    "apiproducts": [
+        {
+            "name": "IdentityAPIProduct",
+            "displayName": "IdentityAPIProduct",
+            "description": "Identity API Product",
+            "approvalType": "auto",
+            "environments": [
+                "test"
+            ],
+            "proxies": [
+                "identity-api-v1"
+            ]
+        }
+    ],
+    "developers": [
+        {
+            "email": "john.doe@acme.com",
+            "firstName": "John",
+            "lastName": "Doe",
+            "userName": "john.doe"
+        }
+    ],
+    "apps": [
+        {
+            "apiProducts": [
+                "IdentityAPIProduct"
+            ],
+            "callbackUrl": "http://callback",
+            "name": "IdentityApp",
+            "scopes": [],
+            "developerEmail": "john.doe@acme.com"
+        }   
+    ]
+}
+

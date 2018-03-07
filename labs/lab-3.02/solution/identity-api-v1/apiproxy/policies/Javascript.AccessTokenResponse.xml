@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Javascript async="false" continueOnError="false" enabled="true" name="Javascript.AccessTokenResponse">
+	<ResourceURL>jsc://accessTokenResponse.js</ResourceURL>
+</Javascript>

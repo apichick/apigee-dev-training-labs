@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TargetEndpoint name="default">
+    <FaultRules>
+        <FaultRule name="Book Not Found">
+            <Step>
+                <Name>AssignMessage.Error.BookNotFound</Name>
+                <Condition>response.status.code = 404 AND proxy.pathsuffix MatchesPath "/books/*"</Condition>
+            </Step>
+        </FaultRule>
+    </FaultRules>
+    <DefaultFaultRule>
+        <AlwaysEnforce>true</AlwaysEnforce>
+        <Step>
+            <Name>AssignMessage.Error.InternalServerError</Name>
+            <Condition>flow.error.code = NULL</Condition>
+        </Step>
+        <Step>
+            <Name>RaiseFault.JSON</Name>
+        </Step>
+    </DefaultFaultRule>
+    <PreFlow>
+        <Response>
+            <Step>
+                <Name>XMLToJSON</Name>
+            </Step>
+            <Step>
+                <Name>Javascript.TransformJSON</Name>
+            </Step>
+            <Step>
+                <Name>ResponseCache</Name>
+            </Step>
+        </Response>
+    </PreFlow>
+    <HTTPTargetConnection>
+        <LoadBalancer>
+            <Server name="library-api-v1"/>
+        </LoadBalancer>
+        <Path>/library/v1</Path>
+    </HTTPTargetConnection>
+</TargetEndpoint>
